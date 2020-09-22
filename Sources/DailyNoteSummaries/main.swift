@@ -138,11 +138,11 @@ let summaries: [DailySummary] = summaryPaths.compactMap { path in
     }
 }.sorted()
 
-let generatedSummaryPath = "\(basePath)/monthly-summaries"
+let generatedSummaryPath = "\(basePath)/daily-summaries"
 let noteSummary = NoteSummary(dailySummaries: summaries)
 
 let summaryText = noteSummary.summary(in: generatedSummaryPath)
-try! summaryText.write(toFile: "\(generatedSummaryPath)/summaries.md", atomically: true, encoding: .utf8)
+try! summaryText.write(toFile: "\(generatedSummaryPath)/index.md", atomically: true, encoding: .utf8)
 
 noteSummary.summaries.forEach { year in
     let yearSummaryText = year.summary(in: generatedSummaryPath)
