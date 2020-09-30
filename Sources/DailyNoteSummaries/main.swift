@@ -1,7 +1,7 @@
 import Foundation
 
 let dailyNotesFolder = "daily notes"
-let basePath = "/Users/dylanelliott/Documents/foam-notes/\(dailyNotesFolder)"
+let basePath = "/Users/dylanelliott/Bear/notes"
 let summaryPaths = try! FileManager().contentsOfDirectory(atPath: basePath)
 
 let regex = try! NSRegularExpression(pattern: "(\\d{4})-(\\d{2})-(\\d{2})\\.md")
@@ -51,13 +51,24 @@ struct MonthlySummary {
     var summary: String {
         let header = "# \(date.month.month!) \(date.year)\n"
         let dailies = summaries.map {
-            "- [\($0.date.day)](\($0.path))"
+            "* [[\($0.date.year)-\(String($0.date.month).leftPadding(toLength: 2, withPad: "0"))-\(String($0.date.day).leftPadding(toLength: 2, withPad: "0"))]]"
         }
         
         return ([header] + dailies).joined(separator: "\n") + "\n\n"
     }
     
-    var filename: String { return "\(date.year)-\(date.month)" }
+    var filename: String { return "\(date.month.month!) \(date.year)" }
+}
+
+extension String {
+    func leftPadding(toLength: Int, withPad character: Character) -> String {
+        let newLength = self.count
+        if newLength < toLength {
+            return String(repeatElement(character, count: toLength - newLength)) + self
+        } else {
+            return self.substring(from: index(self.startIndex, offsetBy: newLength - toLength))
+        }
+    }
 }
 
 extension Int {
@@ -96,7 +107,7 @@ struct YearlySummary {
     func summary(in folder: String) -> String {
         let header = "# \(year)\n"
         let dailies = summaries.map {
-            "- [\($0.date.month.month!)](\($0.filename).md)"
+            "* [[\($0.date.month.month!) \($0.date.year)]]"
         }
         
         return ([header] + dailies).joined(separator: "\n") + "\n\n"
@@ -118,7 +129,7 @@ struct NoteSummary {
     func summary(in folder: String) -> String {
         let header = "# Summaries\n"
         let dailies = summaries.map {
-            "- [\($0.year)](\($0.filename).md)"
+            "* [[\($0.year)]]"
         }
         
         return ([header] + dailies).joined(separator: "\n") + "\n\n"
@@ -138,7 +149,7 @@ let summaries: [DailySummary] = summaryPaths.compactMap { path in
     }
 }.sorted()
 
-let generatedSummaryPath = "\(basePath)/daily-summaries"
+let generatedSummaryPath = "\(basePath)"
 let noteSummary = NoteSummary(dailySummaries: summaries)
 
 let summaryText = noteSummary.summary(in: generatedSummaryPath)
