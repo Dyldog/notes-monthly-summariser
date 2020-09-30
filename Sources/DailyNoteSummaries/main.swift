@@ -1,5 +1,6 @@
 import Foundation
 
+let summaryTag = "\n#summary"
 let dailyNotesFolder = "daily notes"
 let basePath = "/Users/dylanelliott/Bear/notes"
 let summaryPaths = try! FileManager().contentsOfDirectory(atPath: basePath)
@@ -49,12 +50,14 @@ struct MonthlySummary {
     }
     
     var summary: String {
-        let header = "# \(date.month.month!) \(date.year)\n"
+        let header = """
+        # \(date.month.month!) \(date.year)
+        """
         let dailies = summaries.map {
             "* [[\($0.date.year)-\(String($0.date.month).leftPadding(toLength: 2, withPad: "0"))-\(String($0.date.day).leftPadding(toLength: 2, withPad: "0"))]]"
         }
         
-        return ([header] + dailies).joined(separator: "\n") + "\n\n"
+        return ([header] + dailies + [summaryTag]).joined(separator: "\n") + "\n\n"
     }
     
     var filename: String { return "\(date.month.month!) \(date.year)" }
@@ -105,12 +108,14 @@ struct YearlySummary {
     }
     
     func summary(in folder: String) -> String {
-        let header = "# \(year)\n"
+        let header = """
+        # \(year)
+        """
         let dailies = summaries.map {
             "* [[\($0.date.month.month!) \($0.date.year)]]"
         }
         
-        return ([header] + dailies).joined(separator: "\n") + "\n\n"
+        return ([header] + dailies + [summaryTag]).joined(separator: "\n") + "\n\n"
     }
     
     var filename: String { return "\(year)" }
@@ -127,12 +132,14 @@ struct NoteSummary {
     }
     
     func summary(in folder: String) -> String {
-        let header = "# Summaries\n"
+        let header = """
+        # Summaries
+        """
         let dailies = summaries.map {
             "* [[\($0.year)]]"
         }
         
-        return ([header] + dailies).joined(separator: "\n") + "\n\n"
+        return ([header] + dailies + [summaryTag]).joined(separator: "\n") + "\n\n"
     }
 }
 
