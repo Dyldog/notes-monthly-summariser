@@ -28,7 +28,7 @@ struct YearlySummary {
             "* [[\($0.date.month.month!) \($0.date.year)]]"
         }
         
-        return ([header] + dailies).joined(separator: "\n") + "\n\n"
+        return dailies.joined(separator: "\n")
     }
     
     var filename: String { return "\(year)" }

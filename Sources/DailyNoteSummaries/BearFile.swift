@@ -37,17 +37,13 @@ class BearFile: File {
         """
         
         if tags.isEmpty == false {
-            contents += """
-            
-            \(tags.map { "#\($0)" }.joined(separator: " "))"
-            """
+            contents += "\n\n\(tags.map { "#\($0)" }.joined(separator: " "))"
         }
         
         if let id = id {
-            contents += """
-            
-            <!-- {BearID:\(id)} -->
-            """
+            contents += "\n\n<!-- {BearID:\(id)} -->"
         }
+        
+        super.write(contents)
     }
 }

@@ -25,6 +25,6 @@ struct NoteSummary {
             "* [[\($0.year)]]"
         }
         
-        return ([header] + dailies).joined(separator: "\n") + "\n\n"
+        return dailies.joined(separator: "\n")
     }
 }

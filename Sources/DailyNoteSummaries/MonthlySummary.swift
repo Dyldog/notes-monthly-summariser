@@ -25,7 +25,7 @@ struct MonthlySummary {
             "* [[\($0.date.year)-\(String($0.date.month).leftPadding(toLength: 2, withPad: "0"))-\(String($0.date.day).leftPadding(toLength: 2, withPad: "0"))]]"
         }
         
-        return ([header] + dailies).joined(separator: "\n") + "\n\n"
+        return dailies.joined(separator: "\n")
     }
     
     var filename: String { return "\(date.month.month!) \(date.year)" }
