@@ -18,7 +18,7 @@ class BearFile: File {
         }
     }
     
-    let idRegex = try! NSRegularExpression(pattern: "<!-- \\{BearID:(.+)\\} -->")
+    let idRegex = try! NSRegularExpression(pattern: "---\nBearID:(.+)\n---")
     
     let title: String
     let tags: [String]
@@ -30,7 +30,12 @@ class BearFile: File {
     }
     
     override func write(_ text: String) {
-        var contents = """
+        var contents = ""
+        if let id = id {
+            contents += "---\nBearID:\(id)\n---\n"
+        }
+        
+        contents += """
         # \(title)
         
         \(text)
@@ -38,10 +43,6 @@ class BearFile: File {
         
         if tags.isEmpty == false {
             contents += "\n\n\(tags.map { "#\($0)" }.joined(separator: " "))"
-        }
-        
-        if let id = id {
-            contents += "\n\n<!-- {BearID:\(id)} -->"
         }
         
         super.write(contents)

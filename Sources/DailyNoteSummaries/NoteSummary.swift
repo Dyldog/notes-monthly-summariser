@@ -19,7 +19,7 @@ struct NoteSummary {
     
     func summary() -> String {
         let header = """
-        # Summaries
+        # Summary
         """
         let dailies = summaries.map {
             "* [[\($0.year)]]"
